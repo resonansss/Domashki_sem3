@@ -35,19 +35,24 @@ class ParsApp(QWidget):
         text = self.text_edit.toPlainText()
         
         morph = pymorphy2.MorphAnalyzer()
+        words = text.split()  
 
         parsed_text = morph.parse(text)
         
-        self.table_widget.setRowCount(len(parsed_text))
+        self.table_widget.setRowCount(len(words))
         
-        for i, word in enumerate(parsed_text):
-            item_word = QTableWidgetItem(word.word)
+        for i, word in enumerate(words):
+            parse_result = morph.parse(word)
+            lemma = parse_result[0].normal_form
+            pos = parse_result[0].tag.POS
+
+            item_word = QTableWidgetItem(word)
             self.table_widget.setItem(i, 0, item_word)
             
-            item_lemma = QTableWidgetItem(word.normal_form)
+            item_lemma = QTableWidgetItem(lemma)
             self.table_widget.setItem(i, 1, item_lemma)
             
-            item_pos = QTableWidgetItem(word.tag.POS)
+            item_pos = QTableWidgetItem(str(pos))
             self.table_widget.setItem(i, 2, item_pos)
 
 
