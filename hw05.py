@@ -71,12 +71,10 @@ class CorpusCreator:
                     f.write(f"{error}\n")
 
 if __name__ == '__main__':
-    # Parse command line arguments
     parser = argparse.ArgumentParser(description='Process raw corpus files.')
     parser.add_argument('corpus_dir', type=str, help='Path to the corpus directory')
     parser.add_argument('output_dir', type=str, help='Name of the output directory')
     args = parser.parse_args()
 
-    # Create CorpusCreator object and process the corpus
     creator = CorpusCreator(args.corpus_dir, args.output_dir)
     creator.process()
