@@ -18,11 +18,11 @@ class CorpusCreator:
             with open(filepath, 'r', encoding='utf-8') as f:
                 return f.read()
         except UnicodeDecodeError as e:
-            logging.warning(f"File {filepath} has an encoding error: {e}")
+            logging.warning(f'Файл {filepath}. Ошибка кодирования: {e}')
             self.errors.append(filepath)
             return None
         except FileNotFoundError as e:
-            logging.error(f"File {filepath} not found: {e}")
+            logging.error(f'Фойл {filepath} не найден, ошибка: {e}')
             self.errors.append(filepath)
             return None
 
@@ -45,7 +45,7 @@ class CorpusCreator:
 
     def process(self):
         if not os.path.exists(self.corpus_dir):
-            logging.error(f"Corpus directory not found: {self.corpus_dir}")
+            logging.error(f'Неправильный путь к корпусу: {self.corpus_dir}')
             return
 
         if not os.path.isdir(self.output_dir):
@@ -54,7 +54,7 @@ class CorpusCreator:
         for root, dirs, files in os.walk(self.corpus_dir):
             for file in files:
                 if ':' in file or '?' in file:
-                    logging.warning(f"Invalid filename: {file}")
+                    logging.warning(f'Неправильное имя: {file}')
                     self.errors.append(os.path.join(root, file))
                     continue
 
@@ -71,12 +71,10 @@ class CorpusCreator:
                     f.write(f"{error}\n")
 
 if __name__ == '__main__':
-    # Parse command line arguments
     parser = argparse.ArgumentParser(description='Process raw corpus files.')
     parser.add_argument('corpus_dir', type=str, help='Path to the corpus directory')
     parser.add_argument('output_dir', type=str, help='Name of the output directory')
     args = parser.parse_args()
 
-    # Create CorpusCreator object and process the corpus
     creator = CorpusCreator(args.corpus_dir, args.output_dir)
     creator.process()
